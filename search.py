@@ -1,11 +1,16 @@
-import matplotlib.pyplot as plt
-import networkx as nx
-from networkx.drawing.nx_pydot import graphviz_layout
-
 x='#'
 p='.'
 s='s'
 g='g'
+
+maze = """
+#####g#
+#.###.#
+#.....#
+#.###.#
+#...###
+###s###
+"""
 
 maze = [
 [x,x,x,x,g,x],
@@ -16,6 +21,13 @@ maze = [
 [x,s,x,x,x,x],
 [x,x,x,x,x,x],
 ]
+
+UP = 0
+RIGHT = 1
+DOWN = 2
+LEFT = 3
+
+def act(maze, direction):
 
 G = nx.Graph()
 G.pos = []
