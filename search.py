@@ -13,52 +13,84 @@ maze = """
 """
 
 maze = [
+[x,x,x,x,x,x],
 [x,x,x,x,g,x],
-[x,p,x,x,p,x],
 [x,p,x,p,p,x],
+[x,p,x,x,p,x],
 [x,p,p,p,p,x],
 [x,p,x,x,p,x],
 [x,s,x,x,x,x],
 [x,x,x,x,x,x],
 ]
 
-UP = 0
-RIGHT = 1
-DOWN = 2
-LEFT = 3
+UP = (0,-1)
+RIGHT = (1, 0)
+DOWN = (0, 1)
+LEFT = (-1, 0)
 
-def act(maze, direction):
+def find_pos(maze, needle):
+    """
 
-G = nx.Graph()
-G.pos = []
-G.colors = []
+    >>> find_pos(maze, 's')
+    (1, 6)
+    
+    >>> find_pos(maze, 'g')
+    (4, 1)
+    """
+    for y, row in enumerate(maze):
+        for x, space in enumerate(row):
+            if space == needle:
+                return (x, y)
 
-i = 0
-for x in range(0,6):
-    for y in range(0,7):
-        if maze[y][x] != 'a':
-            G.add_node(i)
-            G.pos.append((x,-y))
-            i += 1
+def print_maze(maze):
+    for row in maze:
+        print(''.join(row))
 
-            if maze[y][x] == s:
-                G.colors.append(1)
-            elif maze[y][x] == x:
-                G.colors.append(2)
-            elif maze[y][x] == p:
-                G.colors.append(3)
-            elif maze[y][x] == g:
-                G.colors.append(4)
-            else:
-                G.colors.append(0)
+def get_pos(maze, pos):
+    """
+    >>> get_pos(maze, (1,2))
+    '.'
+    
+    >>> get_pos(maze, (4,1))
+    'g'
+    """
 
+    return maze[pos[1]][pos[0]]
 
-#G.add_edge(1, 2, weight=2.0)
-#G.add_edge(1, 3)
-#G.add_edge(2, 4)
-#G.add_edge(2, 5)
+def is_walkable(maze, pos):
+    return get_pos(maze, pos) != '#'
 
-#nx.draw(G, graphviz_layout(G, pos=prog="dot"))
-print(G, G.pos)
-nx.draw(G, G.pos, node_color=G.colors)
-plt.show()
+def check(maze, actions):
+    """
+
+    >>> check(maze, [UP])
+    Traceback (most recent call last):
+     ...
+    Exception: Goal not reached at [1, 5]
+    
+    >>> check(maze, [DOWN])
+    Traceback (most recent call last):
+     ...
+    Exception: Moved into wall at [1, 7]
+
+    >>> check(maze, [UP, UP, RIGHT, RIGHT, RIGHT, UP, UP, UP])
+    """
+
+    pos = list(find_pos(maze, 's'))
+
+    for action in actions:
+        for i in range(2):
+            pos[i] += action[i]
+
+        if not is_walkable(maze, pos):
+            raise Exception(f"Moved into wall at {pos}")
+
+    if get_pos(maze, pos) != 'g':
+        raise Exception(f"Goal not reached at {pos}")
+
+def agent(maze, position):
+    return [UP]
+
+if __name__ == '__main__':
+    #check(maze, [UP])
+    print_maze(maze)
