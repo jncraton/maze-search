@@ -1,4 +1,6 @@
 from enum import Enum
+import copy
+import time
 
 mazes = [
 """
@@ -99,31 +101,34 @@ def move(pos, action):
     return (pos[0]+action[0], pos[1]+action[1])
     
 
-def check(maze, actions, framerate=0):
+def check(maze, actions, delay=.4, quiet=False):
     """
     Check a sequence of actions to confirm that it solves a maze
 
-    >>> check(mazes[1], [DOWN])
+    >>> check(mazes[1], [DOWN], quiet=True)
     Traceback (most recent call last):
      ...
     Exception: Goal not reached at (3, 2)
     
-    >>> check(mazes[0], [LEFT])
+    >>> check(mazes[0], [LEFT], quiet=True)
     Traceback (most recent call last):
      ...
     Exception: Moved into wall at (0, 2)
 
-    >>> check(mazes[1], [DOWN, DOWN, LEFT, LEFT, UP, UP])
+    >>> check(mazes[1], [DOWN, DOWN, LEFT, LEFT, UP, UP], quiet=True)
     """
 
     pos = find_pos(maze, 's')
 
+    display_maze = copy.deepcopy(maze)
+
     for action in actions:
         pos = move(pos, action)
 
-        if framerate:
-            maze[pos[1], pos[0]] == '.'
-            print_maze(maze)
+        if not quiet:
+            display_maze[pos[1]][pos[0]] = '.'
+            print_maze(display_maze)
+            time.sleep(delay)
 
         if not is_walkable(maze, pos):
             raise Exception(f"Moved into wall at {pos}")
@@ -140,13 +145,12 @@ def get_solution(maze):
     >>> get_solution(mazes[0])
     [(0, -1)]
     """
-    
+
     return []
 
 if __name__ == '__main__':
     for i,m in enumerate(mazes):
         print(f"\nTrying maze {i}")
-        print_maze(m)
         solution = get_solution(m)
-        check(m, solution)
+        check(m, solution, delay=.4)
         print(f"Solved in {len(solution)} moves")
