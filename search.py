@@ -120,12 +120,12 @@ def check(maze, actions, delay=0.4, quiet=False):
     >>> check(mazes[1], [DOWN], quiet=True)
     Traceback (most recent call last):
      ...
-    Exception: Goal not reached at (3, 2)
+    search.MazeException: Goal not reached at (3, 2)
 
     >>> check(mazes[0], [LEFT], quiet=True)
     Traceback (most recent call last):
      ...
-    Exception: Moved into wall at (0, 2)
+    search.MazeException: Moved into wall at (0, 2)
 
     >>> check(mazes[1], [DOWN, DOWN, LEFT, LEFT, UP, UP], quiet=True)
     """
