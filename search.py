@@ -55,6 +55,9 @@ RIGHT = (1, 0)
 DOWN = (0, 1)
 LEFT = (-1, 0)
 
+class MazeException(Exception):
+    pass
+
 def print_maze(maze):
     """ Pretty-prints a maze """
     for row in maze:
@@ -131,10 +134,10 @@ def check(maze, actions, delay=.4, quiet=False):
             time.sleep(delay)
 
         if not is_walkable(maze, pos):
-            raise Exception(f"Moved into wall at {pos}")
+            raise MazeException(f"Moved into wall at {pos}")
 
     if get_pos(maze, pos) != 'g':
-        raise Exception(f"Goal not reached at {pos}")
+        raise MazeException(f"Goal not reached at {pos}")
 
 def get_solution(maze):
     """ 
@@ -152,5 +155,13 @@ if __name__ == '__main__':
     for i,m in enumerate(mazes):
         print(f"\nTrying maze {i}")
         solution = get_solution(m)
-        check(m, solution, delay=.4)
-        print(f"Solved in {len(solution)} moves")
+        try:
+            check(m, solution, quiet=True)
+            check(m, solution, delay=.1)
+        except MazeException:
+            try:
+                check(m, solution, delay=.4)
+            except MazeException as e:
+                print(e)
+                break
+        print(f"Solved in {len(solution)} move(s)")
