@@ -38,4 +38,4 @@ g = Goal state
 # = Wall
 ```
 
-Your task is to implement the `get_solution` function so that it is able to return a list of actions that will solve the provided maze. Your solution does not have to be optimal, but it may not contain moves that would result in the agent attepting to run through walls. The allowed actions that can be returned are `UP`, `DOWN`, `LEFT`, and `RIGHT`.
+Your task is to implement the `plan_solution` function so that it is able to return a list of actions that will solve the provided maze. Your solution does not have to be optimal, but it may not contain moves that would result in the agent attepting to run through walls. The allowed actions that can be returned are `UP`, `DOWN`, `LEFT`, and `RIGHT`.

@@ -149,13 +149,13 @@ def check(maze, actions, delay=0.4, quiet=False):
         raise MazeException(f"Goal not reached at {pos}")
 
 
-def get_solution(maze):
+def plan_solution(maze):
     """
     Computes a solution to a given maze
 
     Returns a list of actions needed to complete the maze
 
-    >>> get_solution(mazes[0])
+    >>> plan_solution(mazes[0])
     [(0, -1)]
     """
 
@@ -164,7 +164,7 @@ def get_solution(maze):
 if __name__ == "__main__":
     for i, m in enumerate(mazes):
         print(f"\nTrying maze {i}")
-        solution = get_solution(m)
+        solution = plan_solution(m)
         try:
             check(m, solution, quiet=True)
             check(m, solution, delay=0.1)
