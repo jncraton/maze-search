@@ -5,7 +5,6 @@ A search-based Python maze solver.
 
 ![A pair of adorable robots having fun solving a maze - FLUX.1-dev](https://github.com/user-attachments/assets/c8409a36-ef04-4f77-b854-fb235588754e)
 
-
 Learning Objectives
 -------------------
 
