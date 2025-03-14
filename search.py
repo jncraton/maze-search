@@ -1,20 +1,21 @@
-from enum import Enum
 import copy
 import time
 
 mazes = [
-"""
+    """
 ###
 #g#
 #s#
 ###
-""","""
+""",
+    """
 #####
 #g#s#
 # # #
 #   #
 #####
-""","""
+""",
+    """
 ########
 #s#    #
 # # ## #
@@ -24,7 +25,8 @@ mazes = [
 ###### #
 #g     #
 ########
-""","""
+""",
+    """
 ##########
 #        #
 #        #
@@ -35,7 +37,8 @@ mazes = [
 #        #
 #        #
 ##########
-""","""
+""",
+    """
 ##########
 #        #
 # ### ## #
@@ -45,23 +48,26 @@ mazes = [
 # #### # #
 #s#g   # #
 ##########
-"""
+""",
 ]
 
 mazes = [[list(r.strip()) for r in m.strip().splitlines()] for m in mazes]
 
-UP = (0,-1)
+UP = (0, -1)
 RIGHT = (1, 0)
 DOWN = (0, 1)
 LEFT = (-1, 0)
 
+
 class MazeException(Exception):
     pass
 
+
 def print_maze(maze):
-    """ Pretty-prints a maze """
+    """Pretty-prints a maze"""
     for row in maze:
-        print(''.join(row))
+        print("".join(row))
+
 
 def find_pos(maze, needle):
     """
@@ -69,7 +75,7 @@ def find_pos(maze, needle):
 
     >>> find_pos(mazes[0], 's')
     (1, 2)
-    
+
     >>> find_pos(mazes[0], 'g')
     (1, 1)
     """
@@ -78,20 +84,23 @@ def find_pos(maze, needle):
             if space == needle:
                 return (x, y)
 
+
 def get_pos(maze, pos):
     """
     >>> get_pos(mazes[0], (1,2))
     's'
-    
+
     >>> get_pos(mazes[1], (4,1))
     '#'
     """
 
     return maze[pos[1]][pos[0]]
 
+
 def is_walkable(maze, pos):
-    """ Returns true if a position is a maze is walkable """
-    return get_pos(maze, pos) != '#'
+    """Returns true if a position is a maze is walkable"""
+    return get_pos(maze, pos) != "#"
+
 
 def move(pos, action):
     """
@@ -101,10 +110,10 @@ def move(pos, action):
     (2, 1)
     """
 
-    return (pos[0]+action[0], pos[1]+action[1])
-    
+    return (pos[0] + action[0], pos[1] + action[1])
 
-def check(maze, actions, delay=.4, quiet=False):
+
+def check(maze, actions, delay=0.4, quiet=False):
     """
     Check a sequence of actions to confirm that it solves a maze
 
@@ -112,7 +121,7 @@ def check(maze, actions, delay=.4, quiet=False):
     Traceback (most recent call last):
      ...
     Exception: Goal not reached at (3, 2)
-    
+
     >>> check(mazes[0], [LEFT], quiet=True)
     Traceback (most recent call last):
      ...
@@ -121,7 +130,7 @@ def check(maze, actions, delay=.4, quiet=False):
     >>> check(mazes[1], [DOWN, DOWN, LEFT, LEFT, UP, UP], quiet=True)
     """
 
-    pos = find_pos(maze, 's')
+    pos = find_pos(maze, "s")
 
     display_maze = copy.deepcopy(maze)
 
@@ -129,19 +138,20 @@ def check(maze, actions, delay=.4, quiet=False):
         pos = move(pos, action)
 
         if not quiet:
-            display_maze[pos[1]][pos[0]] = '.'
+            display_maze[pos[1]][pos[0]] = "."
             print_maze(display_maze)
             time.sleep(delay)
 
         if not is_walkable(maze, pos):
             raise MazeException(f"Moved into wall at {pos}")
 
-    if get_pos(maze, pos) != 'g':
+    if get_pos(maze, pos) != "g":
         raise MazeException(f"Goal not reached at {pos}")
 
+
 def get_solution(maze):
-    """ 
-    Computes a solution to a given maze 
+    """
+    Computes a solution to a given maze
 
     Returns a list of actions needed to complete the maze
 
@@ -151,16 +161,16 @@ def get_solution(maze):
 
     return []
 
-if __name__ == '__main__':
-    for i,m in enumerate(mazes):
+if __name__ == "__main__":
+    for i, m in enumerate(mazes):
         print(f"\nTrying maze {i}")
         solution = get_solution(m)
         try:
             check(m, solution, quiet=True)
-            check(m, solution, delay=.1)
+            check(m, solution, delay=0.1)
         except MazeException:
             try:
-                check(m, solution, delay=.4)
+                check(m, solution, delay=0.4)
             except MazeException as e:
                 print(e)
                 break
