@@ -135,6 +135,7 @@ def check(maze, actions, delay=0.4, quiet=False):
     display_maze = copy.deepcopy(maze)
 
     for action in actions:
+        assert(action in {UP, DOWN, LEFT, RIGHT})
         pos = move(pos, action)
 
         if not quiet:
